@@ -5,7 +5,7 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 import jwt
 from datetime import datetime, timedelta, timezone
-
+from fastapi.middleware.cors import CORSMiddleware
 from pwdlib import PasswordHash
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -211,7 +211,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="What 2 Watch API", lifespan=lifespan)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://what-2-watch-frontend.vercel.app",
+    ],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class MovieCreate(BaseModel):
     tmdb_id: int = Field(gt=0)
