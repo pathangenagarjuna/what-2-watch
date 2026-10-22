@@ -1,9 +1,13 @@
 
+const API_BASE_URL = "https://what-2-watch-api.onrender.com";
+
 const grid = document.getElementById("completedGrid");
 const count = document.getElementById("completedCount");
 
 const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
 let completedMovies = [];
+
+// -------------------- HELPERS --------------------
 
 function escapeHTML(value = "") {
     return String(value).replace(/[&<>"']/g, char => ({
@@ -15,6 +19,7 @@ function escapeHTML(value = "") {
     })[char]);
 }
 
+// -------------------- API --------------------
 
 async function api(url, options = {}) {
     const token = sessionStorage.getItem("what2watch_token");
@@ -25,12 +30,25 @@ async function api(url, options = {}) {
         ...options.headers
     };
 
-    const response = await fetch(url, {
-        ...options,
-        headers
-    });
+    const response = await fetch(
+        url.startsWith("http") ? url : `${API_BASE_URL}${url}`,
+        {
+            ...options,
+            headers
+        }
+    );
 
-    const data = await response.json();
+    // Handle non-JSON responses safely.
+    const responseText = await response.text();
+    let data;
+
+    try {
+        data = responseText ? JSON.parse(responseText) : {};
+    } catch {
+        throw new Error(
+            `Server returned an unexpected response (HTTP ${response.status}).`
+        );
+    }
 
     if (!response.ok) {
         if (response.status === 401) {
@@ -49,6 +67,7 @@ async function api(url, options = {}) {
 
 function renderMovie(movie) {
     const movieId = movie.id;
+
     const poster = movie.poster_path
         ? `<img class="diary-poster"
             src="${POSTER_BASE}${encodeURIComponent(movie.poster_path)}"
@@ -83,12 +102,12 @@ function renderMovie(movie) {
                 </p>
 
                 <div class="diary-actions">
-                    <button class="remove-btn"
+                    <button type="button" class="remove-btn"
                         data-action="move-back" data-id="${movieId}">
                         ↩ Watch again
                     </button>
 
-                    <button class="remove-btn"
+                    <button type="button" class="remove-btn"
                         data-action="remove" data-id="${movieId}">
                         Remove
                     </button>
@@ -153,6 +172,8 @@ function renderMovie(movie) {
 // -------------------- LOAD COMPLETED MOVIES --------------------
 
 async function loadCompleted() {
+    if (!grid || !count) return;
+
     grid.innerHTML =
         '<div class="empty-state">Loading your movie diary...</div>';
 
@@ -174,125 +195,125 @@ async function loadCompleted() {
                </div>`;
 
     } catch (error) {
+        count.textContent = "Unable to load your collection";
+
         grid.innerHTML = `
             <div class="empty-state">
-                Could not load movies: ${escapeHTML(error.message)}
+                <h3>Could not load movies</h3>
+                <p>${escapeHTML(error.message)}</p>
             </div>`;
     }
 }
 
-// -------------------- STAR RATING + MOVIE ACTIONS --------------------
+// -------------------- STAR RATINGS & MOVIE ACTIONS --------------------
 
-grid.addEventListener("click", async event => {
-    const button = event.target.closest("[data-action]");
-    if (!button) return;
+if (grid) {
+    grid.addEventListener("click", async event => {
+        const button = event.target.closest("[data-action]");
+        if (!button) return;
 
-    const action = button.dataset.action;
-    const id = Number(button.dataset.id);
-    const card = button.closest(".diary-card");
+        const action = button.dataset.action;
+        const id = Number(button.dataset.id);
+        const card = button.closest(".diary-card");
 
-    // Select a rating without submitting the review.
-    if (action === "rate") {
-        if (!card) return;
+        // Select a rating without submitting the review.
+        if (action === "rate") {
+            if (!card) return;
 
-        const rating = Number(button.dataset.rating);
+            const rating = Number(button.dataset.rating);
+            if (rating < 1 || rating > 5) return;
 
-        if (rating < 1 || rating > 5) return;
+            card.dataset.selectedRating = String(rating);
 
-        // Store the selected rating on this movie card.
-        card.dataset.selectedRating = String(rating);
+            card.querySelectorAll(".star-btn").forEach(star => {
+                const starNumber = Number(star.dataset.rating);
+                const selected = starNumber <= rating;
 
-        // Update all five stars.
-        card.querySelectorAll(".star-btn").forEach(star => {
-            const starNumber = Number(star.dataset.rating);
-            const selected = starNumber <= rating;
-
-            star.classList.toggle("selected", selected);
-
-            star.setAttribute(
-                "aria-pressed",
-                String(starNumber === rating)
-            );
-        });
-
-        return;
-    }
-
-    button.disabled = true;
-
-    const status = document.getElementById(`status-${id}`);
-
-    try {
-        // Save rating, reaction, and review together.
-        if (action === "save-review") {
-            if (!card) {
-                throw new Error("Could not find this movie card.");
-            }
-
-            const rating = Number(
-                card.dataset.selectedRating ||
-                card.dataset.savedRating ||
-                0
-            );
-
-            const reaction =
-                card.querySelector(".reaction-select").value;
-
-            const reviewText =
-                card.querySelector(".review-textarea").value;
-
-            if (rating < 1 || rating > 5) {
-                throw new Error("Please select a star rating first.");
-            }
-
-            if (!reaction) {
-                throw new Error("Please choose a reaction.");
-            }
-
-            await api(`/api/movies/${id}/review`, {
-                method: "PUT",
-                body: JSON.stringify({
-                    rating,
-                    reaction,
-                    review_text: reviewText
-                })
+                star.classList.toggle("selected", selected);
+                star.setAttribute(
+                    "aria-pressed",
+                    String(starNumber === rating)
+                );
             });
 
-            if (status) {
-                status.textContent = "✓ Review saved successfully!";
-            }
-
-            // Reload from the database so saved stars remain yellow.
-            await loadCompleted();
             return;
         }
 
-        // Move a movie back to the watchlist.
-        if (action === "move-back") {
-            await api(`/api/movies/${id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    status: "watchlist"
-                })
-            });
+        button.disabled = true;
+
+        const status = document.getElementById(`status-${id}`);
+
+        try {
+            // Save rating, reaction, and review together.
+            if (action === "save-review") {
+                if (!card) {
+                    throw new Error("Could not find this movie card.");
+                }
+
+                const rating = Number(
+                    card.dataset.selectedRating ||
+                    card.dataset.savedRating ||
+                    0
+                );
+
+                const reaction =
+                    card.querySelector(".reaction-select").value;
+
+                const reviewText =
+                    card.querySelector(".review-textarea").value;
+
+                if (rating < 1 || rating > 5) {
+                    throw new Error("Please select a star rating first.");
+                }
+
+                if (!reaction) {
+                    throw new Error("Please choose a reaction.");
+                }
+
+                await api(`/api/movies/${id}/review`, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        rating,
+                        reaction,
+                        review_text: reviewText
+                    })
+                });
+
+                if (status) {
+                    status.textContent = "✓ Review saved successfully!";
+                }
+
+                await loadCompleted();
+                return;
+            }
+
+            // Move a movie back to the watchlist.
+            if (action === "move-back") {
+                await api(`/api/movies/${id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        status: "watchlist"
+                    })
+                });
+            }
+
+            // Remove a movie.
+            if (action === "remove") {
+                await api(`/api/movies/${id}`, {
+                    method: "DELETE"
+                });
+            }
+
+            await loadCompleted();
+
+        } catch (error) {
+            alert(error.message);
+
+        } finally {
+            button.disabled = false;
         }
-
-        // Remove a movie.
-        if (action === "remove") {
-            await api(`/api/movies/${id}`, {
-                method: "DELETE"
-            });
-        }
-
-        await loadCompleted();
-
-    } catch (error) {
-        alert(error.message);
-
-    } finally {
-        button.disabled = false;
-    }
-});
+    });
+}
 
 // -------------------- THEME --------------------
 
