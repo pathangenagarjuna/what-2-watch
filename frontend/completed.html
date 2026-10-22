@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Movies | What 2 Watch</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/completed.css">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">WHAT <span>2</span> WATCH<span class="dot">.</span></a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/#watchlist">Watchlist</a>
+            <a href="/completed.html" aria-current="page">Completed</a>
+            <button id="themeToggle" class="theme-btn"
+                aria-label="Toggle theme">☀</button>
+        </nav>
+    </header>
+
+    <main class="completed-page">
+        <section class="completed-hero">
+            <p class="eyebrow">YOUR PERSONAL MOVIE DIARY</p>
+            <h1>Movies I've <span>watched.</span></h1>
+            <p>Every film leaves a memory. Keep yours here.</p>
+        </section>
+
+        <section class="completed-content">
+            <div class="completed-heading">
+                <div>
+                    <h2>My collection</h2>
+                    <p id="completedCount">Loading your movies...</p>
+                </div>
+            </div>
+
+            <div id="completedGrid" class="completed-grid">
+                <div class="empty-state">Loading your movie diary...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a class="logo" href="/">WHAT <span>2</span> WATCH<span class="dot">.</span></a>
+        <p>Made for the love of movies.</p>
+    </footer>
+
+    <script src="/completed.js"></script>
+</body>
+</html>

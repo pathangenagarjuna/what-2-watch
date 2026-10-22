@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | What 2 Watch</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <main class="auth-container">
+        <a href="/" class="logo">
+            WHAT <span>2</span> WATCH<span class="dot">.</span>
+        </a>
+
+        <section class="auth-card">
+            <div class="auth-heading">
+                <p class="eyebrow">YOUR PERSONAL CINEMA</p>
+                <h1 id="formTitle">Welcome back.</h1>
+                <p id="formSubtitle">Log in to continue your movie journey.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button type="button" id="loginTab" class="auth-tab active">
+                    Login
+                </button>
+                <button type="button" id="registerTab" class="auth-tab">
+                    Create Account
+                </button>
+            </div>
+
+            <form id="authForm">
+                <div id="usernameGroup" class="form-group" hidden>
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        minlength="3"
+                        maxlength="30"
+                        autocomplete="username"
+                        placeholder="Choose a username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        maxlength="254"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                    >
+                </div>
+
+                
+<div class="form-group">
+    <label for="password">Password</label>
+
+    <div class="password-wrapper">
+        <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="8"
+            maxlength="128"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+        >
+
+        <button
+            type="button"
+            id="togglePassword"
+            class="password-toggle"
+            aria-label="Show password"
+            aria-pressed="false"
+        >👁</button>
+    </div>
+</div>
+
+
+                <p id="authMessage" class="auth-message" role="status"></p>
+
+                <button type="submit" id="submitButton" class="submit-btn">
+                    Login
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                By continuing, you're ready for your next great movie.
+            </p>
+        </section>
+
+        <a href="/" class="back-link">← Back to What 2 Watch</a>
+    </main>
+
+    <script src="auth.js"></script>
+</body>
+</html>

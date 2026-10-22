@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What 2 Watch | Your Movie Diary</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="background-slideshow" aria-hidden="true">
+    <div class="background-slide active" style="background-image: url('images/backgrounds/bg1.jpg')"></div>
+    <!-- // <div class="background-slide" style="background-image: url('images/backgrounds/bg2.jpg')"></div> -->
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg3.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg4.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg5.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg6.png')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg7.jpeg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg8.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg9.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg10.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg11.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg12.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg13.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg14.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg15.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg16.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg17.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg18.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg19.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg20.jpg')"></div>
+    <div class="background-slide" style="background-image: url('images/backgrounds/bg21.jpg')"></div>
+</div>
+    <header class="navbar">
+        <a class="logo" href="/">WHAT <span>2</span> WATCH<span class="dot">.</span></a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="#discover">Discover</a>
+            <a href="#watchlist">My Watchlist</a>
+            <a href="/completed.html">Completed</a>
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle theme">☀</button>
+        <button id="sound-toggle" type="button" aria-pressed="true">🔊 Sound On </button>
+</nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="eyebrow">YOUR NEXT FAVORITE FILM STARTS HERE</p>
+            <h1>So, what are we<br><span>watching tonight?</span></h1>
+            <p class="subtitle">
+                Discover movies. Build your list. Keep your movie memories.
+            </p>
+
+            <form id="searchForm" class="search-box">
+                <span>⌕</span>
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search movies, e.g. Interstellar..."
+                    autocomplete="off"
+                    required
+                >
+                <button type="submit">Search</button>
+            </form>
+            <p class="attribution">Movie information and posters powered by TMDB.</p>
+        </section>
+
+        <section id="discover" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">THE MOVIE UNIVERSE</p>
+                    <h2 id="resultsTitle">Find your next watch</h2>
+                </div>
+                <span id="resultCount" class="result-count"></span>
+            </div>
+
+            <div id="movieGrid" class="movie-grid">
+                <div class="empty-state">
+                    <span class="empty-icon">🎬</span>
+                    <h3>Your next movie is out there.</h3>
+                    <p>Search for a movie to get started.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="watchlist" class="section watchlist-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">SAVED FOR LATER</p>
+                    <h2>My Watchlist</h2>
+                </div>
+                <span id="watchlistCount" class="result-count">0 movies</span>
+            </div>
+            <div id="watchlistGrid" class="queue-list">
+                <div class="empty-state">
+                    <span class="empty-icon">🍿</span>
+                    <h3>Your list starts here.</h3>
+                    <p>Add movies you want to watch.</p>
+                </div>
+            </div>
+        </section>
+        
+        
+
+
+<section id="completed" class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">YOUR MOVIE DIARY</p>
+            <h2>Completed Movies</h2>
+            <p class="completed-preview-subtitle">
+                The stories you've already experienced.
+            </p>
+        </div>
+        <span id="completedCount" class="result-count">0 movies</span>
+    </div>
+
+    <div id="completedPreview" class="completed-preview">
+        <!-- Movie posters will be loaded here -->
+    </div>
+
+    <a href="/completed.html" class="open-diary-btn">
+        Open Completed Movies <span>→</span>
+    </a>
+</section>
+<section id="admin-watchlist" class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">CURATED FOR MOVIE LOVERS</p>
+            <h2>Admin Watchlist</h2>
+            <p class="completed-preview-subtitle">
+                Movies recommended by What 2 Watch.
+            </p>
+        </div>
+        <span id="adminWatchlistCount" class="result-count">0 movies</span>
+    </div>
+
+    <div id="adminWatchlistGrid" class="movie-grid">
+        <div class="empty-state">
+            <span class="empty-icon">🎬</span>
+            <h3>Loading recommendations...</h3>
+        </div>
+    </div>
+</section>
+        </section>
+
+    </main>
+
+    <footer>
+        <a class="logo" href="/">WHAT <span>2</span> WATCH<span class="dot">.</span></a>
+        <p>Made for the love of movies.</p>
+        <p class="footer-note">
+            This product uses the TMDB API but is not endorsed or certified by TMDB.
+        </p>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>

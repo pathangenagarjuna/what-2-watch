@@ -1,0 +1,240 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0d0d12;
+    --card: #17171f;
+    --text: #f5f5f7;
+    --muted: #a3a3b2;
+    --border: #30303c;
+    --accent: #a78bfa;
+    --accent-hover: #9270f5;
+    --input-bg: #101017;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, #282044 0%, transparent 50%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    gap: 28px;
+}
+
+.logo {
+    color: var(--text);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.logo .dot {
+    color: #f472b6;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 34px;
+    box-shadow: 0 24px 80px #00000040;
+}
+
+.auth-heading {
+    margin-bottom: 26px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.auth-heading h1 {
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.auth-heading p:last-child {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.auth-tabs {
+    display: flex;
+    padding: 5px;
+    background: var(--input-bg);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    gap: 5px;
+}
+
+.auth-tab {
+    flex: 1;
+    border: none;
+    padding: 12px 8px;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.auth-tab.active {
+    background: var(--accent);
+    color: #17121f;
+}
+
+.form-group {
+    margin-bottom: 19px;
+}
+
+.form-group[hidden] {
+    display: none;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: var(--accent);
+}
+
+.form-group input::placeholder {
+    color: #777786;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 11px;
+    background: var(--accent);
+    color: #17121f;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-message {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.auth-message.error {
+    color: #fb7185;
+}
+
+.auth-message.success {
+    color: #4ade80;
+}
+
+.auth-footer {
+    margin-top: 23px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.back-link {
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: var(--accent);
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .auth-heading h1 {
+        font-size: 27px;
+    }
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.password-toggle:hover {
+    color: var(--accent);
+}
