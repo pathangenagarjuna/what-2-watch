@@ -19,7 +19,7 @@ let completed = [];
 let draggedQueueItem = null;
 
 // -------------------- API --------------------
-
+const API_BASE_URL = "https://what-2-watch-api.onrender.com";
 async function api(url, options = {}) {
     const token = sessionStorage.getItem("what2watch_token");
 
