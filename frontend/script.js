@@ -85,9 +85,9 @@ function isAdminUser() {
 
 // -------------------- SEARCH MOVIE CARDS --------------------
 
+
 function movieCard(movie, mode = "search") {
     const title = escapeHTML(movie.title);
-
     const poster = movie.poster_path
         ? `<img class="poster"
                 src="${POSTER_BASE}${encodeURIComponent(movie.poster_path)}"
@@ -100,7 +100,6 @@ function movieCard(movie, mode = "search") {
         : "Year unknown";
 
     const rating = Number(movie.vote_average || 0).toFixed(1);
-
     let actions = "";
 
     if (mode === "search") {
@@ -144,6 +143,13 @@ function movieCard(movie, mode = "search") {
             <a class="add-btn" href="/completed.html">
                 Open Movie Diary
             </a>`;
+    } else if (mode === "admin" && isAdminUser()) {
+        actions = `
+            <button class="remove-btn"
+                data-action="admin-remove"
+                data-movie-id="${movie.id}">
+                Remove recommendation
+            </button>`;
     }
 
     return `
@@ -156,6 +162,7 @@ function movieCard(movie, mode = "search") {
             </div>
         </article>`;
 }
+
 
 // -------------------- SEARCH RESULTS --------------------
 
@@ -472,6 +479,28 @@ document.addEventListener("click", async event => {
             await api(`/api/movies/${id}`, {
                 method: "DELETE"
             });
+        }
+        
+        if (action === "admin-remove") {
+            if (!isAdminUser()) {
+                throw new Error(
+                    "Only the admin can remove recommendations."
+                );
+            }
+
+            if (!confirm(
+                "Remove this recommendation for everyone?"
+            )) {
+                return;
+            }
+
+            await api(`/api/admin-watchlist/${id}`, {
+                method: "DELETE"
+            });
+
+            await loadAdminWatchlist();
+            renderSearchResults();
+            return;
         }
 
         await loadLists();

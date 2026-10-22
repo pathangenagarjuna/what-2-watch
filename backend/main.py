@@ -663,6 +663,31 @@ def get_admin_watchlist():
 
     return [dict(row) for row in rows]
 
+@app.delete("/api/admin-watchlist/{movie_id}")
+def delete_admin_watchlist_movie(
+    movie_id: int,
+    user: dict = Depends(get_current_user),
+):
+    if user.get("role") != "admin":
+        raise HTTPException(
+            403,
+            "Only the admin can remove shared recommendations."
+        )
+
+    with get_db() as db:
+        cursor = db.execute(
+            "DELETE FROM admin_watchlist WHERE id = ?",
+            (movie_id,),
+        )
+
+        if cursor.rowcount == 0:
+            raise HTTPException(
+        status_code=404,
+        detail="Admin recommendation not found."
+    )
+
+    return {"message": "Recommendation removed successfully."}
+
 
 @app.get("/")
 def home():
