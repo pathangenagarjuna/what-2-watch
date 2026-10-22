@@ -109,8 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
             : "Logging in...";
 
         try {
+            const API_BASE_URL = "https://what-2-watch-api.onrender.com";
             const response = await fetch(
-                isRegister ? "/api/auth/register" : "/api/auth/login",
+                `${API_BASE_URL}${isRegister ? "/api/auth/register" : "/api/auth/login"}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
