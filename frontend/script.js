@@ -29,10 +29,14 @@ async function api(url, options = {}) {
         ...options.headers
     };
 
-    const response = await fetch(url, {
+  
+const response = await fetch(
+    url.startsWith("http") ? url : `${API_BASE_URL}${url}`,
+    {
         ...options,
         headers
-    });
+    }
+);
 
     const data = await response.json();
 
