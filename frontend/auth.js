@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "success"
             );
 
-            window.location.assign("/");
+            window.location.assign("/index.html");
         } catch (error) {
             console.error("Authentication error:", error);
             showMessage(
